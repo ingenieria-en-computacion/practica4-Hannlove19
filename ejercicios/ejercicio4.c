@@ -4,17 +4,17 @@
 
 // Crea un tipo de dato estudiante que guarde el nombre del estudiante max. 40 caracteres y su edad
 typedef struct {
-    
+    char nombre [40];
+    int edad;
 } Estudiante;
 
 int main() {
-
     int size = 2;
-    // Crea un arreglo dinámico usando malloc de tamaño size
+    Estudiante *estudiantes = (Estudiante *)malloc(size * sizeof(Estudiante));// Crea un arreglo dinámico usando malloc de tamaño size
     
     //Si el arreglo es nulo imprime el mensaje
-    if ( == NULL) {
-        printf("Error: No se pudo asignar memoria.\n");
+    if (estudiantes == NULL) {
+        printf("Error: No se pudo asignar memoria\n");
         return 1;
     }
 
@@ -25,30 +25,33 @@ int main() {
     while (1) {
         printf("Nombre: ");
         scanf("%s", nombre);
-        if (strcmp(nombre, "fin") == 0) break;
 
-        printf("Edad: ");
-        scanf("%d", &edad);
+        if (strcmp(nombre, "fin") == 0) break;
+            printf("Edad: ");
+            scanf("%d", &edad);
 
         if (count >= size) {
             size *= 2;
             //Cambia el tamaño del arreglo
+            estudiantes = (Estudiante *)realloc(estudiantes, size * sizeof(Estudiante));
             //Verifica nuevamente que si apunta a nulo se imprima el error
-            if ( == NULL) {
+            if ( estudiantes == NULL) {
                 printf("Error: No se pudo reasignar memoria.\n");
                 return 1;
             }
         }
         //copia el nombre leido en el nuevo estudiante y su edad
-        
+        strncpy(estudiantes[count].nombre, nombre, 40);
+        estudiantes[count].edad = edad;
         count++;
     }
 
     printf("Lista de estudiantes:\n");
     for (int i = 0; i < count; i++) {
-        
+        printf("Estudiante %d: %s, Edad: %d\n", i + 1, estudiantes[i].nombre, estudiantes[i].edad);
     }
 
     //libera la memoria
+    free(estudiantes);
     return 0;
 }
